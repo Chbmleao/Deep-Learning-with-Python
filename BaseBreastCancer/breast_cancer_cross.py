@@ -1,7 +1,7 @@
 import pandas as pd
 import keras
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 
@@ -14,9 +14,11 @@ def createNetwork():
     classifier.add(Dense(units = 16, activation = 'relu', 
                          kernel_initializer = 'random_uniform', 
                          input_dim = 30))
+    classifier.add(Dropout(0.2))
     # second layer
     classifier.add(Dense(units = 16, activation = 'relu', 
                          kernel_initializer = 'random_uniform'))
+    classifier.add(Dropout(0.2))
     # output layer
     classifier.add(Dense(units = 1, 
                          activation = 'sigmoid'))

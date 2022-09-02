@@ -11,14 +11,26 @@ rank = pd.read_csv('output_breast.csv')
 def createNetwork():
     classifier = Sequential()
     # first layer
-    classifier.add(Dense(units = 16, activation = 'relu', 
-                         kernel_initializer = 'random_uniform', 
+    classifier.add(Dense(units = 32, activation = 'relu', 
+                         kernel_initializer = 'normal', 
                          input_dim = 30))
     classifier.add(Dropout(0.2))
+    
     # second layer
-    classifier.add(Dense(units = 16, activation = 'relu', 
-                         kernel_initializer = 'random_uniform'))
+    classifier.add(Dense(units = 32, activation = 'relu', 
+                         kernel_initializer = 'normal'))
     classifier.add(Dropout(0.2))
+    
+    # third layer
+    classifier.add(Dense(units = 16, activation = 'relu', 
+                         kernel_initializer = 'normal'))
+    classifier.add(Dropout(0.2))
+    
+    # fourth layer
+    classifier.add(Dense(units = 16, activation = 'relu', 
+                         kernel_initializer = 'normal'))
+    classifier.add(Dropout(0.2))
+    
     # output layer
     classifier.add(Dense(units = 1, 
                          activation = 'sigmoid'))
@@ -33,7 +45,7 @@ def createNetwork():
     return classifier
 
 classifier = KerasClassifier(build_fn = createNetwork, 
-                             epochs = 100, 
+                             epochs = 500, 
                              batch_size = 10)
 
 results = cross_val_score(estimator = classifier,

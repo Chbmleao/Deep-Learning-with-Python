@@ -15,3 +15,8 @@ database = database.drop('seller', axis = 1)
 database['offerType'].value_counts()
 database = database.drop('offerType', axis = 1)
 
+# treatment of inconsistents
+inconsistents1 = database.loc[database.price <= 10]
+database = database[database.price > 10]
+inconsistents2 = database.loc[database.price > 350000]
+database = database[database.price < 350000]

@@ -20,3 +20,23 @@ inconsistents1 = database.loc[database.price <= 10]
 database = database[database.price > 10]
 inconsistents2 = database.loc[database.price > 350000]
 database = database[database.price < 350000]
+
+# checking null attributes
+database.loc[pd.isnull(database['vehicleType'])]
+database['vehicleType'].value_counts() # limousine
+database.loc[pd.isnull(database['gearbox'])]
+database['gearbox'].value_counts() # manuell
+database.loc[pd.isnull(database['model'])]
+database['model'].value_counts() # golf
+database.loc[pd.isnull(database['fuelType'])]
+database['fuelType'].value_counts() # benzin
+database.loc[pd.isnull(database['notRepairedDamage'])]
+database['notRepairedDamage'].value_counts() # nein
+
+# values to replace in null attributes
+values = {'vehicleType': 'limousine',
+          'gearbox': 'manuell',
+          'model': 'golf',
+          'fuelType': 'benzin',
+          'notRepairedDamage': 'nein'}
+database = database.fillna(value = values)

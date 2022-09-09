@@ -40,3 +40,19 @@ values = {'vehicleType': 'limousine',
           'fuelType': 'benzin',
           'notRepairedDamage': 'nein'}
 database = database.fillna(value = values)
+
+
+predictors = database.iloc[:, 1:13].values
+realPrices = database.iloc[:, 0].values
+
+from sklearn.preprocessing import LabelEncoder
+labelEncoderPredictors = LabelEncoder()
+predictors[:, 0] = labelEncoderPredictors.fit_transform(predictors[:, 0])
+predictors[:, 1] = labelEncoderPredictors.fit_transform(predictors[:, 1])
+predictors[:, 3] = labelEncoderPredictors.fit_transform(predictors[:, 3])
+predictors[:, 5] = labelEncoderPredictors.fit_transform(predictors[:, 5])
+predictors[:, 8] = labelEncoderPredictors.fit_transform(predictors[:, 8])
+predictors[:, 9] = labelEncoderPredictors.fit_transform(predictors[:, 9])
+predictors[:, 10] = labelEncoderPredictors.fit_transform(predictors[:, 10])
+
+

@@ -1,4 +1,6 @@
 import pandas as pd
+from keras.models import Sequential
+from keras.layers import Dense
 
 database = pd.read_csv('autos.csv', encoding = 'ISO-8859-1')
 database = database.drop('dateCrawled', axis = 1)
@@ -45,7 +47,7 @@ database = database.fillna(value = values)
 predictors = database.iloc[:, 1:13].values
 realPrices = database.iloc[:, 0].values
 
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 labelEncoderPredictors = LabelEncoder()
 predictors[:, 0] = labelEncoderPredictors.fit_transform(predictors[:, 0])
 predictors[:, 1] = labelEncoderPredictors.fit_transform(predictors[:, 1])
@@ -54,5 +56,37 @@ predictors[:, 5] = labelEncoderPredictors.fit_transform(predictors[:, 5])
 predictors[:, 8] = labelEncoderPredictors.fit_transform(predictors[:, 8])
 predictors[:, 9] = labelEncoderPredictors.fit_transform(predictors[:, 9])
 predictors[:, 10] = labelEncoderPredictors.fit_transform(predictors[:, 10])
+
+
+from sklearn.compose import ColumnTransformer 
+ct = ColumnTransformer([("Name_Of_Your_Step", OneHotEncoder(),[0, 1, 3, 5, 8, 9, 10])], 
+                       remainder="passthrough")
+predictors = ct.fit_transform(predictors).toarray()    
+
+
+# neural network structure
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

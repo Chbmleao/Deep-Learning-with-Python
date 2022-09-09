@@ -65,28 +65,23 @@ predictors = ct.fit_transform(predictors).toarray()
 
 
 # neural network structure
+regressor = Sequential()
+# first layer
+regressor.add(Dense(units = 158, 
+                    activation = 'relu',
+                    input_dim = 316))
+#second layer
+regressor.add(Dense(units = 158, 
+                    activation = 'relu'))
+# output layer
+regressor.add(Dense(units = 1,
+                    activation = 'linear'))
 
+regressor.compile(loss = 'mean_absolute_error',
+                  optimizer = 'adam',
+                  metrics = ['mean_absolute_error'])
+regressor.fit(predictors, realPrices, batch_size=300, epochs = 100)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+previsions = regressor.predict(predictors)
+realPrices.mean()
+previsions.mean()

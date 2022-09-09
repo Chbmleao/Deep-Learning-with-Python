@@ -72,7 +72,7 @@ results = cross_val_score(estimator = regressor,
                           X = predictors, y = realPrices,
                           cv = 10, scoring = 'neg_median_absolute_error')
 
-mean = results.mean()
+resultsMean = results.mean()
 resultsStandardDeviation = results.std()
 
 

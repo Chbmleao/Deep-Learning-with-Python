@@ -33,3 +33,32 @@ predictors = ct.fit_transform(predictors).toarray()
 
 
 # neural network
+
+inputLayer = Input(shape = (61,))
+ocultLayer1 = Dense(units = 32, activation = 'sigmoid')(inputLayer)
+ocultLayer2 = Dense(units = 32, activation = 'sigmoid')(ocultLayer1)
+outputLayer1 = Dense(units = 1, activation = 'linear')(ocultLayer2)
+outputLayer2 = Dense(units = 1, activation = 'linear')(ocultLayer2)
+outputLayer3 = Dense(units = 1, activation = 'linear')(ocultLayer2)
+
+regressor = Model(inputs = inputLayer,
+                  outputs = [outputLayer1, outputLayer2, outputLayer3])
+
+regressor.compile(optimizer = 'adam',
+                  loss = 'mse')
+regressor.fit(predictors, [naSales, euSales, jpSales],
+              epochs = 5000, batch_size = 100)
+
+naPrevision, euPrevision, jpPrevision = regressor.predict(predictors)
+
+
+
+
+
+
+
+
+
+
+
+

@@ -50,15 +50,3 @@ regressor.fit(predictors, [naSales, euSales, jpSales],
               epochs = 5000, batch_size = 100)
 
 naPrevision, euPrevision, jpPrevision = regressor.predict(predictors)
-
-
-
-
-
-
-
-
-
-
-
-

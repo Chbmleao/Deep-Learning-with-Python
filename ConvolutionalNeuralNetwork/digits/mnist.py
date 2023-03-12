@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 from keras.datasets import mnist
 from keras.models import Sequential
-from keras.layers import Dense, Flatten
+from keras.layers import Dense, Flatten, Dropout
 from keras.utils import np_utils
 from keras.layers import Conv2D, MaxPooling2D
+from tensorflow.keras.layers import BatchNormalization
 
 # database preprocessing
 (xTraining, yTraining), (xTest, yTest) = mnist.load_data()
@@ -28,13 +29,24 @@ classifier = Sequential()
 # first step
 classifier.add(Conv2D(32, (3,3), input_shape=(28, 28, 1),
                       activation = 'relu'))
+classifier.add(BatchNormalization())
 # second step - pooling
 classifier.add(MaxPooling2D(pool_size = (2,2)))
 # third step - flattening
+#classifier.add(Flatten())
+
+classifier.add(Conv2D(32, (3,3), activation = 'relu'))
+classifier.add(BatchNormalization())
+classifier.add(MaxPooling2D(pool_size = (2,2)))
+
 classifier.add(Flatten())
+
 # fourth step - dense neural network
 classifier.add(Dense(units = 128,
                      activation = 'relu'))
+classifier.add(Dropout(0.2))
+classifier.add(Dense(units = 128, activation = 'relu'))
+classifier.add(Dropout(0.2))
 classifier.add(Dense(units = 10,
                      activation = 'softmax'))
 classifier.compile(loss = 'categorical_crossentropy',

@@ -5,6 +5,7 @@ from keras.layers import Dense, Flatten, Dropout
 from keras.utils import np_utils
 from keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras.layers import BatchNormalization
+import numpy as np
 
 # database preprocessing
 (xTraining, yTraining), (xTest, yTest) = mnist.load_data()
@@ -59,4 +60,14 @@ classifier.fit(trainingPredictors, trainingRank,
 results = classifier.evaluate(testPredictors, testRank)
 
 
+# predict just one image
+test_image = xTest[2]
+plt.imshow(test_image)
+test_image= test_image.reshape(1, 28, 28, 1)
+test_image = test_image.astype('float32')
+test_image /= 255
+prevision = classifier.predict(test_image)
 
+for i in range(10):
+    if prevision[0][i] > 0.5:
+        print(i)

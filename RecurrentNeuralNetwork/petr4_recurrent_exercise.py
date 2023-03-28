@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-database = pd.read_csv('petr4_treinamento.csv')
+database = pd.read_csv('petr4_treinamento_ex.csv')
 database = database.dropna()
 train_database = database.iloc[:, 1:2].values
 
@@ -14,7 +14,7 @@ train_normalized_database = normalizer.fit_transform(train_database)
 
 predictors = []
 real_price = []
-for i in range(90, 1242):
+for i in range(90, 1342):
     predictors.append(train_normalized_database[i-90:i, 0])
     real_price.append(train_normalized_database[i, 0])
     
@@ -50,7 +50,7 @@ regressor.fit(predictors, real_price,
               epochs = 100, batch_size = 32)
 
 # stock prices forecast
-test_database = pd.read_csv('petr4_teste.csv')
+test_database = pd.read_csv('petr4_teste_ex.csv')
 test_real_price = test_database.iloc[:, 1:2].values
 complete_database = pd.concat((database['Open'], test_database['Open']), axis = 0)
 inputs = complete_database[len(complete_database) - len(test_database) - 90:].values
@@ -58,7 +58,7 @@ inputs = inputs.reshape(-1, 1)
 inputs = normalizer.transform(inputs)
 
 x_test = []
-for i in range(90, 112):
+for i in range(90, 109):
     x_test.append(inputs[i-90:i, 0])
 x_test = np.array(x_test)
 x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))    

@@ -30,3 +30,35 @@ autoencoder.fit(trainPredictors,
                 batch_size=256,
                 validation_data=(testPredictors, testPredictors))
 
+originalDimension = Input(shape=(784,))
+encoderLayer = autoencoder.layers[0]
+encoder = Model(originalDimension, encoderLayer(originalDimension))
+encoder.summary()
+
+encodedImages = encoder.predict(testPredictors)
+decodedImages = autoencoder.predict(testPredictors)
+
+numImages = 10
+testImages = np.random.randint(testPredictors.shape[0], size=numImages)
+plt.figure(figsize=(18,18))
+for i, imageId in enumerate(testImages):
+    # print(i)
+    # print(imageId)
+
+    # original images
+    axis = plt.subplot(10, 10, i+1)
+    plt.imshow(testPredictors[imageId].reshape(28, 28))
+    plt.xticks(())
+    plt.yticks(())
+    
+    # encoded images
+    axis = plt.subplot(10, 10, i+1+numImages)
+    plt.imshow(encodedImages[imageId].reshape(8, 4))
+    plt.xticks(())
+    plt.yticks(())
+    
+    # decoded images
+    axis = plt.subplot(10, 10, i+1+numImages*2)
+    plt.imshow(decodedImages[imageId].reshape(28, 28))
+    plt.xticks(())
+    plt.yticks(())

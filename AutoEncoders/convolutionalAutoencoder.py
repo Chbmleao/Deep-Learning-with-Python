@@ -14,20 +14,20 @@ testPredictors = testPredictors.astype("float32") / 255
 autoencoder = Sequential()
 
 # Encoder
-autoencoder.add(Conv2D(filter=16,
+autoencoder.add(Conv2D(filters=16,
                        kernel_size=(3,3),
                        activation="relu",
                        input_shape=(28, 28, 1)))
 autoencoder.add(MaxPooling2D(pool_size=(2, 2)))
 
-autoencoder.add(Conv2D(filter=8,
+autoencoder.add(Conv2D(filters=8,
                        kernel_size=(3,3),
                        activation="relu", 
                        padding="same"))
 autoencoder.add(MaxPooling2D(pool_size=(2, 2), padding="same"))
 
 # 4, 4, 8
-autoencoder.add(Conv2D(filter=8,
+autoencoder.add(Conv2D(filters=8,
                        kernel_size=(3,3),
                        activation="relu",
                        padding="same",
@@ -37,13 +37,38 @@ autoencoder.add(Flatten())
 
 autoencoder.add(Reshape((4, 4, 8)))
 
+# Decoder
+autoencoder.add(Conv2D(filters=8,
+                       kernel_size=(3,3),
+                       activation="relu", 
+                       padding="same"))
+autoencoder.add(UpSampling2D(size=(2, 2)))
+
+autoencoder.add(Conv2D(filters=8,
+                       kernel_size=(3,3),
+                       activation="relu", 
+                       padding="same"))
+autoencoder.add(UpSampling2D(size=(2, 2)))
+
+autoencoder.add(Conv2D(filters=16,
+                       kernel_size=(3,3),
+                       activation="relu"))
+autoencoder.add(UpSampling2D(size=(2, 2)))
+
+autoencoder.add(Conv2D(filters=1,
+                       kernel_size=(3,3),
+                       activation="sigmoid", 
+                       padding="same"))
+
+autoencoder.summary()
 
 
-
-
-
-
-
-
-
+autoencoder.compile(optimizer="adam",
+                    loss="binary_crossentropy",
+                    metrics=["accuracy"])
+autoencoder.fit(trainPredictors,
+                trainPredictors,
+                epochs=50,
+                batch_size=256,
+                validation_data=(testPredictors, testPredictors))
 

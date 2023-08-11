@@ -35,3 +35,41 @@ encoder = Model(originalDimension, encoderLayer(originalDimension))
 
 trainEncodedPredictors = encoder.predict(trainPredictors)
 testEncodedPredictors = encoder.predict(testPredictors)
+
+
+# without dimensional reduction neural network
+c1 = Sequential()
+c1.add(Dense(units=397,
+             activation="relu",
+             input_dim=784))
+c1.add(Dense(units=397,
+             activation="relu"))
+c1.add(Dense(units=10,
+             activation="softmax"))
+c1.compile(optimizer="adam",
+           loss="categorical_crossentropy",
+           metrics=["accuracy"])
+c1.fit(trainPredictors, 
+       trainDummyClass,
+       batch_size=256,
+       epochs=100,
+       validation_data=(testPredictors, testDummyClass))
+
+
+# with dimensional reduction neural network
+c2 = Sequential()
+c2.add(Dense(units=21,
+             activation="relu",
+             input_dim=32))
+c2.add(Dense(units=21,
+             activation="relu"))
+c2.add(Dense(units=10,
+             activation="softmax"))
+c2.compile(optimizer="adam",
+           loss="categorical_crossentropy",
+           metrics=["accuracy"])
+c2.fit(trainEncodedPredictors, 
+       trainDummyClass,
+       batch_size=256,
+       epochs=100,
+       validation_data=(testEncodedPredictors, testDummyClass))

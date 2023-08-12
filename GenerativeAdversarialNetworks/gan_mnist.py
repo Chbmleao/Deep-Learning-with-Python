@@ -9,3 +9,33 @@ from keras_adversarial import AdversarialOptimizerSimultaneous, normal_latent_sa
 
 (trainPredictors, _), (_, _) = mnist.load_data()
 trainPredictors = trainPredictors.astype("float32") / 255
+
+# Generator
+generator = Sequential()
+generator.add(Dense(units=500,
+                    input_dim=100,
+                    activation="relu",
+                    kernel_regularizer=L1L2(1e-5, 1e-5)))
+generator.add(Dense(units=500,
+                    input_dim=100,
+                    activation="relu",
+                    kernel_regularizer=L1L2(1e-5, 1e-5)))
+generator.add(Dense(units=784,
+                    activation="sigmoid",
+                    kernel_regularizer=L1L2(1e-5, 1e-5)))
+generator.add(Reshape((28, 28)))
+
+# Discriminator
+discriminator = Sequential()
+discriminator.add(InputLayer(input_shape=(28, 28)))
+discriminator.add(Flatten())
+discriminator.add(Dense(units=500,
+                        activation="relu",
+                        kernel_regularizer=L1L2(1e-5, 1e-5)))
+discriminator.add(Dense(units=500,
+                        activation="relu",
+                        kernel_regularizer=L1L2(1e-5, 1e-5)))
+discriminator.add(Dense(units=1,
+                        activation="sigmoid",
+                        kernel_regularizer=L1L2(1e-5, 1e-5)))
+

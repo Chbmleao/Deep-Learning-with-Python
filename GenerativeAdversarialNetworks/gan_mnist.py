@@ -39,3 +39,24 @@ discriminator.add(Dense(units=1,
                         activation="sigmoid",
                         kernel_regularizer=L1L2(1e-5, 1e-5)))
 
+
+gan = simple_gan(generator, discriminator, normal_latent_sampling((100,)))
+model = AdversarialModel(base_model=gan,
+                         player_params=[generator.trainable_weights,
+                                        discriminator.trainable_weights])
+
+model.adversarial_compile(adversarial_optimizer = AdversarialOptimizerSimultaneous,
+                          player_optimizers = ["adam", "adam"],
+                          loss = "binary_crossentropy")
+
+model.fit(x = trainPredictors, 
+          y = gan_targets(60000), 
+          epochs = 100, 
+          batch_size = 256)
+
+samples = np.random_normal(size = (10, 100))
+prediction = generator.predict(samples)
+
+for i in range(prediction.shape[0]):
+    plt.imshow(prediction[i, :], cmap="gray")
+    plt.show()
